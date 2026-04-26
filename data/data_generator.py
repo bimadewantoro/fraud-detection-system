@@ -132,9 +132,9 @@ def generate_transactions(
         if ftype == "unusual_amount":
             fraud_amounts.append(int(rng.integers(50_000_000, 500_000_000)))
         elif ftype == "high_risk_merchant":
-            fraud_amounts.append(int(rng.lognormal(12, 1.5).clip(1_000_000, 100_000_000)))
+            fraud_amounts.append(int(np.clip(rng.lognormal(12, 1.5), 1_000_000, 100_000_000)))
         else:
-            fraud_amounts.append(int(rng.lognormal(11.5, 1.0).clip(100_000, 80_000_000)))
+            fraud_amounts.append(int(np.clip(rng.lognormal(11.5, 1.0), 100_000, 80_000_000)))
 
         if ftype == "high_risk_merchant":
             fraud_merchants.append(rng.choice(HIGH_RISK_MERCHANTS))
