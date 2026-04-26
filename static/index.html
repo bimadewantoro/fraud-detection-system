@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI-Driven Real-Time Fraud Detection & Early Warning System Dashboard for Banking">
+    <title>FraudShield AI — Real-Time Fraud Detection & EWS Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <!-- ── Sidebar Navigation ──────────────────────────────────────────── -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                </svg>
+            </div>
+            <div class="brand-text">
+                <span class="brand-name">FraudShield</span>
+                <span class="brand-badge">AI</span>
+            </div>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-label">MONITORING</div>
+            <a class="nav-item active" data-section="overview" id="nav-overview">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                <span>Dashboard</span>
+            </a>
+            <a class="nav-item" data-section="transactions" id="nav-transactions">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                <span>Transactions</span>
+            </a>
+            <a class="nav-item" data-section="alerts" id="nav-alerts">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                <span>Alerts & EWS</span>
+                <span class="nav-badge" id="alert-badge">0</span>
+            </a>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-label">ANALYTICS</div>
+            <a class="nav-item" data-section="models" id="nav-models">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6m-7-10.9L8.5 9.6m7 4.8l3.5 1.5M1.6 17L5.1 15.5m13.8-7l3.5-1.5M1.6 7l3.5 1.5m13.8 7l3.5 1.5"/></svg>
+                <span>Model Performance</span>
+            </a>
+            <a class="nav-item" data-section="timeline" id="nav-timeline">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span>Action Plan</span>
+            </a>
+        </div>
+
+        <div class="sidebar-footer">
+            <div class="system-status">
+                <div class="status-dot pulse"></div>
+                <span>System Active</span>
+            </div>
+            <div class="version-tag">v1.0.0 — MLOps</div>
+        </div>
+    </nav>
+
+    <!-- ── Main Content ────────────────────────────────────────────────── -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="top-header">
+            <div class="header-left">
+                <button class="menu-toggle" id="menu-toggle">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                </button>
+                <div>
+                    <h1 id="page-title">Executive Dashboard</h1>
+                    <p class="header-subtitle">AI-Driven Real-Time Fraud Detection & Early Warning System</p>
+                </div>
+            </div>
+            <div class="header-right">
+                <div class="live-indicator">
+                    <div class="live-dot"></div>
+                    <span>LIVE</span>
+                </div>
+                <div class="header-clock" id="header-clock"></div>
+            </div>
+        </header>
+
+        <!-- ── Section: Overview ───────────────────────────────────────── -->
+        <section class="content-section active" id="section-overview">
+            <!-- KPI Cards Row -->
+            <div class="kpi-row" id="kpi-cards">
+                <div class="kpi-card" id="kpi-total-txn">
+                    <div class="kpi-icon blue">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    </div>
+                    <div class="kpi-data">
+                        <span class="kpi-value" id="kpi-total-value">—</span>
+                        <span class="kpi-label">Total Transactions</span>
+                    </div>
+                </div>
+                <div class="kpi-card" id="kpi-fraud">
+                    <div class="kpi-icon red">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    </div>
+                    <div class="kpi-data">
+                        <span class="kpi-value" id="kpi-fraud-value">—</span>
+                        <span class="kpi-label">Fraud Detected (Blocked)</span>
+                    </div>
+                </div>
+                <div class="kpi-card" id="kpi-loss">
+                    <div class="kpi-icon green">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    </div>
+                    <div class="kpi-data">
+                        <span class="kpi-value" id="kpi-loss-value">—</span>
+                        <span class="kpi-label">Loss Prevented</span>
+                    </div>
+                </div>
+                <div class="kpi-card" id="kpi-sla">
+                    <div class="kpi-icon purple">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
+                    <div class="kpi-data">
+                        <span class="kpi-value" id="kpi-sla-value">—</span>
+                        <span class="kpi-label">SLA Improvement</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row 1 -->
+            <div class="charts-grid">
+                <div class="chart-card wide">
+                    <div class="chart-header">
+                        <h3>Monthly Transaction & Fraud Trend</h3>
+                        <span class="chart-tag">2025</span>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="chart-monthly-trend"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Risk Score Distribution</h3>
+                        <span class="chart-tag">All Transactions</span>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="chart-risk-dist"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts Row 2 -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Fraud by Channel</h3>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="chart-fraud-channel"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Fraud by Type</h3>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="chart-fraud-type"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>EWS Severity Breakdown</h3>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="chart-ews-severity"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── Section: Transactions ───────────────────────────────────── -->
+        <section class="content-section" id="section-transactions">
+            <div class="section-toolbar">
+                <div class="filter-group">
+                    <button class="filter-btn active" data-filter="all" id="filter-all">All</button>
+                    <button class="filter-btn" data-filter="HIGH" id="filter-high">
+                        <span class="dot red"></span> High Risk
+                    </button>
+                    <button class="filter-btn" data-filter="MEDIUM" id="filter-medium">
+                        <span class="dot orange"></span> Medium Risk
+                    </button>
+                    <button class="filter-btn" data-filter="LOW" id="filter-low">
+                        <span class="dot green"></span> Low Risk
+                    </button>
+                </div>
+                <div class="search-box">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                    <input type="text" placeholder="Search transactions..." id="txn-search">
+                </div>
+            </div>
+            <div class="table-container">
+                <table class="data-table" id="transactions-table">
+                    <thead>
+                        <tr>
+                            <th>Transaction ID</th>
+                            <th>Customer</th>
+                            <th>Timestamp</th>
+                            <th>Amount (Rp)</th>
+                            <th>Channel</th>
+                            <th>Merchant</th>
+                            <th>Risk Score</th>
+                            <th>Decision</th>
+                        </tr>
+                    </thead>
+                    <tbody id="txn-tbody"></tbody>
+                </table>
+            </div>
+            <div class="pagination" id="txn-pagination"></div>
+        </section>
+
+        <!-- ── Section: Alerts & EWS ───────────────────────────────────── -->
+        <section class="content-section" id="section-alerts">
+            <div class="alerts-grid">
+                <!-- Fraud Alerts -->
+                <div class="alerts-panel">
+                    <div class="panel-header">
+                        <h3>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                            Fraud Alerts
+                        </h3>
+                        <span class="panel-count" id="fraud-alert-count">0</span>
+                    </div>
+                    <div class="alerts-list" id="fraud-alerts-list"></div>
+                </div>
+                <!-- EWS Alerts -->
+                <div class="alerts-panel">
+                    <div class="panel-header">
+                        <h3>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                            Early Warning Signals
+                        </h3>
+                        <span class="panel-count" id="ews-alert-count">0</span>
+                    </div>
+                    <div class="alerts-list" id="ews-alerts-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── Section: Model Performance ──────────────────────────────── -->
+        <section class="content-section" id="section-models">
+            <div class="model-grid">
+                <!-- Fraud Model Card -->
+                <div class="model-card">
+                    <div class="model-card-header">
+                        <h3>Fraud Detection Model</h3>
+                        <span class="model-tag">Random Forest + XGBoost Ensemble</span>
+                    </div>
+                    <div class="metrics-row" id="fraud-metrics-row"></div>
+                    <div class="chart-body compact">
+                        <canvas id="chart-fraud-confusion"></canvas>
+                    </div>
+                </div>
+                <!-- EWS Model Card -->
+                <div class="model-card">
+                    <div class="model-card-header">
+                        <h3>EWS Credit Risk Model</h3>
+                        <span class="model-tag">XGBoost Classifier</span>
+                    </div>
+                    <div class="metrics-row" id="ews-metrics-row"></div>
+                    <div class="chart-body compact">
+                        <canvas id="chart-ews-confusion"></canvas>
+                    </div>
+                </div>
+            </div>
+            <!-- Feature Importance -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Fraud Model — Feature Importance</h3>
+                    </div>
+                    <div class="chart-body tall">
+                        <canvas id="chart-fraud-features"></canvas>
+                    </div>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>EWS Model — Feature Importance</h3>
+                    </div>
+                    <div class="chart-body tall">
+                        <canvas id="chart-ews-features"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── Section: Timeline ───────────────────────────────────────── -->
+        <section class="content-section" id="section-timeline">
+            <div class="timeline-header-card">
+                <h2>Action Plan & Timeline</h2>
+                <p>6-Month Implementation Roadmap — AI-Driven Fraud Detection & EWS</p>
+            </div>
+            <div class="timeline" id="timeline-container"></div>
+        </section>
+    </main>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
